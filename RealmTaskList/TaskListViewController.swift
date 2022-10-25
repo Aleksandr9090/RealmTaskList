@@ -8,82 +8,102 @@
 import UIKit
 
 class TaskListViewController: UITableViewController {
+    
+    var taskLists: [TaskList] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
+        
+        navigationItem.rightBarButtonItem = addButton
+        navigationItem.leftBarButtonItem = editButtonItem
+        
+        
     }
+        
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        taskLists.count
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskListCell", for: indexPath)
+        var content = cell.defaultContentConfiguration()
+        let taskList = taskLists[indexPath.row]
+        content.secondaryText = "\(taskList.tasks.count)"
+        cell.contentConfiguration = content
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    // MARK: - Table View Data Source
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let taskList = taskLists[indexPath.row]
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+            StorageManager.shared.delete(taskList)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, isDone in
+            self.showAlert(with: taskList) {
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+            isDone(true)
+        }
+        
+        let doneAction = UIContextualAction(style: .normal, title: "Done" ) { _, _, isDone in
+            StorageManager.shared.done(taskList)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            isDone(true)
+        }
+        
+        editAction.backgroundColor = .orange
+        doneAction.backgroundColor = .systemGreen
+        
+        return UISwipeActionsConfiguration(actions: [doneAction, editAction, deleteAction])
+        
+        
     }
-    */
+    
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    @objc private func addButtonPressed() {
+        showAlert()
     }
-    */
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
+    
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+        guard let indexPath = tableView.indexPathForSelectedRow else { return }
+        guard let tasksVC = segue.destination as? TasksViewController else { return }
+        let taskList = taskLists[indexPath.row]
+        tasksVC.taskList = taskList
 
+    }
+   
+
+}
+
+extension TaskListViewController {
+    private func showAlert(with taskList: TaskList? = nil, completion: (() -> Void)? = nil) {
+        let title = taskList != nil ? "Edit List" : "New List"
+        let alert = UIAlertController.createAlertController(withTitle: title, andMessage: "Set title for new task list")
+        
+        alert.action(with: taskList) { newValue in
+            if let taskList = taskList, let completion = completion {
+                StorageManager.shared.edit(taskList, newValue: newValue)
+                completion()
+            } else {
+                self.save(taskList: newValue)
+            }
+        }
+        present(alert, animated: true)
+    }
+    
+    private func save(taskList: String) {
+        
+    }
 }
