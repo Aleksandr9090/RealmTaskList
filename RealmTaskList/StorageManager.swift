@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import RealmSwift
 
 class StorageManager {
     static let shared = StorageManager()
+    let realm = try! Realm()
     
     private init () {}
     
@@ -25,6 +27,9 @@ class StorageManager {
     }
     
     func save(_ taskLists: [TaskList]) {
+        try! realm.write{
+            realm.add(taskLists)
+        }
         
     }
     

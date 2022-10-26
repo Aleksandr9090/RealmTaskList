@@ -14,6 +14,8 @@ class TaskListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        createTempData()
+        
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
         
         navigationItem.rightBarButtonItem = addButton
@@ -72,6 +74,12 @@ class TaskListViewController: UITableViewController {
 
     @objc private func addButtonPressed() {
         showAlert()
+    }
+    
+    private func createTempData() {
+        DataManager.shared.createTempData {
+            self.tableView.reloadData()
+        }
     }
 
     
