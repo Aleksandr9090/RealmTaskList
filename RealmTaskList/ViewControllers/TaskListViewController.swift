@@ -6,38 +6,43 @@
 //
 
 import UIKit
+import RealmSwift
 
 class TaskListViewController: UITableViewController {
     
-    var taskLists: [TaskList] = []
+    var taskLists: Results<TaskList>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        taskLists = StorageManager.shared.realm.objects(TaskList.self)
         createTempData()
         
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
+        let addButton = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(addButtonPressed)
+        )
         
         navigationItem.rightBarButtonItem = addButton
         navigationItem.leftBarButtonItem = editButtonItem
-        
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
         
 
     // MARK: - Table view data source
-
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         taskLists.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskListCell", for: indexPath)
-        var content = cell.defaultContentConfiguration()
         let taskList = taskLists[indexPath.row]
-        content.secondaryText = "\(taskList.tasks.count)"
-        cell.contentConfiguration = content
+        
+        cell.configure(with: taskList)
         return cell
     }
     
@@ -64,11 +69,9 @@ class TaskListViewController: UITableViewController {
         }
         
         editAction.backgroundColor = .orange
-        doneAction.backgroundColor = .systemGreen
+        doneAction.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
         
         return UISwipeActionsConfiguration(actions: [doneAction, editAction, deleteAction])
-        
-        
     }
     
 
@@ -76,12 +79,18 @@ class TaskListViewController: UITableViewController {
         showAlert()
     }
     
+    @IBAction func sortingList(_ sender: UISegmentedControl) {
+        taskLists =  sender.selectedSegmentIndex == 0
+            ? taskLists.sorted(byKeyPath: "date")
+            : taskLists.sorted(byKeyPath: "name")
+        tableView.reloadData()
+    }
+    
     private func createTempData() {
         DataManager.shared.createTempData {
             self.tableView.reloadData()
         }
     }
-
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -89,10 +98,7 @@ class TaskListViewController: UITableViewController {
         guard let tasksVC = segue.destination as? TasksViewController else { return }
         let taskList = taskLists[indexPath.row]
         tasksVC.taskList = taskList
-
     }
-   
-
 }
 
 extension TaskListViewController {
@@ -112,6 +118,9 @@ extension TaskListViewController {
     }
     
     private func save(taskList: String) {
-        
+        let taskList = TaskList(value: [taskList])
+        StorageManager.shared.save(taskList)
+        let rowIndex = IndexPath(row: taskLists.index(of: taskList) ?? 0, section: 0)
+        tableView.insertRows(at: [rowIndex], with: .automatic)
     }
 }

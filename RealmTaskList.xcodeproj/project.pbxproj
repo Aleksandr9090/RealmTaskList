@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1F6A189529086758001E71BB /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 1F6A189429086758001E71BB /* Realm */; };
 		1F6A189729086758001E71BB /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1F6A189629086758001E71BB /* RealmSwift */; };
+		1F6A189F290990B5001E71BB /* Extension UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6A189E290990B5001E71BB /* Extension UITableViewCell.swift */; };
 		1F6D6D5829071E2A005CF34C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6D6D5729071E2A005CF34C /* AppDelegate.swift */; };
 		1F6D6D5A29071E2A005CF34C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6D6D5929071E2A005CF34C /* SceneDelegate.swift */; };
 		1F6D6D5F29071E2A005CF34C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F6D6D5D29071E2A005CF34C /* Main.storyboard */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F6A189E290990B5001E71BB /* Extension UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension UITableViewCell.swift"; sourceTree = "<group>"; };
 		1F6D6D5429071E2A005CF34C /* RealmTaskList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealmTaskList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F6D6D5729071E2A005CF34C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F6D6D5929071E2A005CF34C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +53,68 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1F6A18A029099F3E001E71BB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1F6D6D732907F71A005CF34C /* AlertController.swift */,
+				1F6A189E290990B5001E71BB /* Extension UITableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1F6A18A129099F63001E71BB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1F6D6D712907EE09005CF34C /* StorageManager.swift */,
+				1F871B6C29082C010046D159 /* DataManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1F6A18A229099F82001E71BB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1F6D6D6F2907E89D005CF34C /* TaskList.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1F6A18A329099FA2001E71BB /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				1F6D6D5D29071E2A005CF34C /* Main.storyboard */,
+				1F6D6D6229071E2E005CF34C /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		1F6A18A429099FC9001E71BB /* App */ = {
+			isa = PBXGroup;
+			children = (
+				1F6D6D5729071E2A005CF34C /* AppDelegate.swift */,
+				1F6D6D5929071E2A005CF34C /* SceneDelegate.swift */,
+				1F6D6D6529071E2E005CF34C /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		1F6A18A529099FD8001E71BB /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				1F6D6D6B29071FFF005CF34C /* TaskListViewController.swift */,
+				1F6D6D6D29072042005CF34C /* TasksViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		1F6A18A629099FF4001E71BB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1F6D6D6029071E2E005CF34C /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		1F6D6D4B29071E2A005CF34C = {
 			isa = PBXGroup;
 			children = (
@@ -70,18 +134,13 @@
 		1F6D6D5629071E2A005CF34C /* RealmTaskList */ = {
 			isa = PBXGroup;
 			children = (
-				1F6D6D5729071E2A005CF34C /* AppDelegate.swift */,
-				1F6D6D5929071E2A005CF34C /* SceneDelegate.swift */,
-				1F6D6D5D29071E2A005CF34C /* Main.storyboard */,
-				1F6D6D6029071E2E005CF34C /* Assets.xcassets */,
-				1F6D6D6229071E2E005CF34C /* LaunchScreen.storyboard */,
-				1F6D6D6529071E2E005CF34C /* Info.plist */,
-				1F6D6D6B29071FFF005CF34C /* TaskListViewController.swift */,
-				1F6D6D6D29072042005CF34C /* TasksViewController.swift */,
-				1F6D6D6F2907E89D005CF34C /* TaskList.swift */,
-				1F6D6D712907EE09005CF34C /* StorageManager.swift */,
-				1F6D6D732907F71A005CF34C /* AlertController.swift */,
-				1F871B6C29082C010046D159 /* DataManager.swift */,
+				1F6A18A329099FA2001E71BB /* Storyboards */,
+				1F6A18A529099FD8001E71BB /* ViewControllers */,
+				1F6A18A229099F82001E71BB /* Models */,
+				1F6A18A129099F63001E71BB /* Services */,
+				1F6A18A029099F3E001E71BB /* Views */,
+				1F6A18A429099FC9001E71BB /* App */,
+				1F6A18A629099FF4001E71BB /* Resources */,
 			);
 			path = RealmTaskList;
 			sourceTree = "<group>";
@@ -165,6 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F6D6D5829071E2A005CF34C /* AppDelegate.swift in Sources */,
+				1F6A189F290990B5001E71BB /* Extension UITableViewCell.swift in Sources */,
 				1F871B6D29082C010046D159 /* DataManager.swift in Sources */,
 				1F6D6D702907E89E005CF34C /* TaskList.swift in Sources */,
 				1F6D6D6E29072042005CF34C /* TasksViewController.swift in Sources */,
@@ -322,7 +382,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6T3C77J6JN;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = RealmTaskList/Info.plist;
+				INFOPLIST_FILE = RealmTaskList/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -351,7 +411,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6T3C77J6JN;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = RealmTaskList/Info.plist;
+				INFOPLIST_FILE = RealmTaskList/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
